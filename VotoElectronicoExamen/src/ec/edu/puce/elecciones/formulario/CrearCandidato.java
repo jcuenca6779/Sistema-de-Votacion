@@ -124,6 +124,7 @@ public class CrearCandidato extends JInternalFrame implements ActionListener {
 		candidatos.add(candidato);
 		agregarFila();
 		txtNombre.setText("");
+		textField.setText("");
 		idCandidato++;
 		
 	}
@@ -132,8 +133,8 @@ public class CrearCandidato extends JInternalFrame implements ActionListener {
 		model.setRowCount(0);
 		for (Candidato candidato : candidatos) {
 			Object[] fila = new Object[2];
-			fila[0] = candidato.getNombre();
-			fila[1] = candidato.getLista();
+			fila[1] = candidato.getNombre();
+			fila[0] = candidato.getLista();
 			model.addRow(fila);
 		}
 	}

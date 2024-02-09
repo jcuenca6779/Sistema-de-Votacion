@@ -2,6 +2,7 @@ package ec.edu.puce.elecciones.formulario;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -36,15 +37,17 @@ public class CrearEstudiante extends JInternalFrame implements ActionListener {
 	private String[] nombreCursos;
 	private List<Estudiante> estudiantes;
 	private List<Curso> cursos;
-	private int idEstudiante;
+	private int CedulaEstudiante;
 	private JComboBox comboBox;
+	private JLabel lblCedula;
+	private JTextField textCedula;
 	
-	public CrearEstudiante(List<Curso> cursos, List<Estudiante> estudiantes, int idEstudiante) {
-		this.idEstudiante=idEstudiante;
+	public CrearEstudiante(List<Curso> cursos, List<Estudiante> estudiantes, int CedulaEstudiante) {
+		this.CedulaEstudiante=CedulaEstudiante;
 		this.estudiantes=estudiantes;
 		this.cursos = cursos;
 		setTitle("CREAR ESTUDIANTES POR PARALELO");
-		setBounds(100, 100, 443, 385);
+		setBounds(100, 100, 443, 412);
 		getContentPane().setLayout(null);
 		
 		
@@ -77,21 +80,21 @@ public class CrearEstudiante extends JInternalFrame implements ActionListener {
 
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(this);
-		btnNuevo.setBounds(30, 72, 117, 25);
+		btnNuevo.setBounds(30, 103, 117, 25);
 		getContentPane().add(btnNuevo);
 
 		btnGuardar = new JButton("Agregar");
 		btnGuardar.addActionListener(this);
-		btnGuardar.setBounds(157, 72, 117, 25);
+		btnGuardar.setBounds(157, 103, 117, 25);
 		getContentPane().add(btnGuardar);
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
-		btnCancelar.setBounds(286, 72, 117, 25);
+		btnCancelar.setBounds(289, 103, 117, 25);
 		getContentPane().add(btnCancelar);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 115, 416, 224);
+		scrollPane.setBounds(10, 138, 416, 224);
 		getContentPane().add(scrollPane);
 
 		table = new JTable();
@@ -101,7 +104,13 @@ public class CrearEstudiante extends JInternalFrame implements ActionListener {
 				System.out.println(model.getValueAt(0, 0));
 			}
 		});
-		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Nombre" }));
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Numero de Cedula", "Nombre"
+			}
+		));
 		scrollPane.setViewportView(table);
 		
 		JLabel lblNombres_1 = new JLabel("Nombres");
@@ -116,6 +125,15 @@ public class CrearEstudiante extends JInternalFrame implements ActionListener {
 		});
 		comboBox.setBounds(99, 11, 231, 24);
 		getContentPane().add(comboBox);
+		
+		lblCedula = new JLabel("Cedula");
+		lblCedula.setBounds(30, 71, 70, 15);
+		getContentPane().add(lblCedula);
+		
+		textCedula = new JTextField();
+		textCedula.setColumns(10);
+		textCedula.setBounds(99, 71, 231, 19);
+		getContentPane().add(textCedula);
 
 		model = (DefaultTableModel) table.getModel();
 		cambiarFilas();
@@ -128,37 +146,41 @@ public class CrearEstudiante extends JInternalFrame implements ActionListener {
 	
 	private void cambiarFilas() {
 		model.setRowCount(0);
-		/*if(this.comboBox.getSelectedIndex()<0) {
-			return;
-		}*/
-		for (Estudiante estudiante : estudiantes) {
-			if(estudiante.getCurso().getNombreCurso() == cursos.get(this.comboBox.getSelectedIndex()).getNombreCurso()) {
-				Object[] fila = new Object[1];
-				fila[0] = estudiante.getNombre();
-				model.addRow(fila);
+		int selectedIndex = this.comboBox.getSelectedIndex();
+		if (selectedIndex >= 0 && selectedIndex < cursos.size()) {
+			for (Estudiante estudiante : estudiantes) {
+				 if(estudiante.getCurso().getNombreCurso().equals(cursos.get(this.comboBox.getSelectedIndex()).getNombreCurso())) {
+					Object[] fila = new Object[2];
+					fila[1] = estudiante.getNombre();
+					fila[0] = estudiante.getCedula();
+					model.addRow(fila);
+				}
 			}
+		} else {
+			JOptionPane.showMessageDialog(null,"No hay un curso seleccionado o creado","ERROR",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void agregarEstudiante() {
 		estudiante = new Estudiante();
-		estudiante.setId(idEstudiante);
+		estudiante.setCedula(textCedula.getText());
 		estudiante.setNombre(txtNombre.getText());
 		estudiante.setCurso(cursos.get(this.comboBox.getSelectedIndex()));
-		estudiante.setClavePersonal("123456");
 		estudiantes.add(estudiante);
 		agregarFila();
 		cambiarFilas();
 		txtNombre.setText("");
-		idEstudiante++;
+		textCedula.setText("");
+		
 		
 	}
 
 	private void agregarFila() {
 		model.setRowCount(0);
 		for (Estudiante estudiante : estudiantes) {
-			Object[] fila = new Object[1];
-			fila[0] = estudiante.getNombre();
+			Object[] fila = new Object[2];
+			fila[1] = estudiante.getNombre();
+			fila[0] = estudiante.getCedula();
 			model.addRow(fila);
 		}
 	}

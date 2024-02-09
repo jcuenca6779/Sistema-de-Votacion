@@ -3,19 +3,18 @@ package ec.edu.puce.elecciones.dominio;
 import java.util.ArrayList;
 
 public class Estudiante {
-	private int id;
+	private String Ncedula;
 	private String nombre;
-	private String clavePersonal;
 	private Curso curso;
     private Candidato voto;
     private boolean haVotado = false; 
 
-	public int getId() {
-		return id;
+	public String getCedula() {
+		return Ncedula;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setCedula(String cedula) {
+		this.Ncedula = cedula;
 	}
 
 	public String getNombre() {
@@ -24,14 +23,6 @@ public class Estudiante {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public String getClavePersonal() {
-		return clavePersonal;
-	}
-
-	public void setClavePersonal(String clavePersonal) {
-		this.clavePersonal = clavePersonal;
 	}
 
 	public Curso getCurso() {

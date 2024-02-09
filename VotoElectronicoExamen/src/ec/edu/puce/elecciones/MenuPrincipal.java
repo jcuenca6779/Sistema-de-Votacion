@@ -25,6 +25,10 @@ import ec.edu.puce.elecciones.formulario.CrearEstudiante;
 import ec.edu.puce.elecciones.formulario.CrearMesa;
 
 import ec.edu.puce.elecciones.formulario.ReportePadronElectoral;
+import ec.edu.puce.elecciones.formulario.ResultadoGeneral;
+import ec.edu.puce.elecciones.formulario.ResultadoMesa;
+import ec.edu.puce.elecciones.sufragio.Sufragar;
+import ec.edu.puce.elecciones.sufragio.VistaLogin;
 
 import javax.swing.JMenuBar;
 import java.awt.Color;
@@ -138,6 +142,19 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		});
 		mntmCandidatos.setFont(new Font("Dialog", Font.BOLD, 16));
 		mnAdministracin.add(mntmCandidatos);
+				
+				JMenu mnNewMenu_1 = new JMenu("Proceso");
+				mnNewMenu_1.setFont(new Font("Dialog", Font.BOLD, 16));
+				menuBar.add(mnNewMenu_1);
+				
+				JMenuItem mntmNewMenuItem_2 = new JMenuItem("Sufragar");
+				mntmNewMenuItem_2.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						sufragarVentana();
+					}
+				});
+				mntmNewMenuItem_2.setFont(new Font("Dialog", Font.BOLD, 16));
+				mnNewMenu_1.add(mntmNewMenuItem_2);
 		
 				JMenu mnReportes = new JMenu("Reportes");
 				mnReportes.setForeground(new Color(0, 0, 0));
@@ -167,10 +184,20 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Resultados por Mesa");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		mntmNewMenuItem.setFont(new Font("Dialog", Font.BOLD, 16));
 		mnNewMenu.add(mntmNewMenuItem);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Resultados Generales");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		mntmNewMenuItem_1.setFont(new Font("Dialog", Font.BOLD, 16));
 		mnNewMenu.add(mntmNewMenuItem_1);
 
@@ -230,6 +257,27 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		crearCandidato.setVisible(true);
 	}
 	
+	public void resultadosMVentana() {
+		ResultadoMesa resultadoM = new ResultadoMesa(mesas);
+		desktopPane.add(resultadoM);
+		resultadoM.setVisible(true);
+	}
+	public void resultadosGVentana() {
+		ResultadoGeneral resultadoG = new ResultadoGeneral();
+		desktopPane.add(resultadoG);
+		resultadoG.setVisible(true);
+	}
+	
+	public void sufragarVentana() {
+		VistaLogin login = new VistaLogin(estudiantes,candidatos);
+		login.setVisible(true);
+	}
+	//public void sufragarVentana() {
+	//Sufragar login = new Sufragar(candidatos);
+	//desktopPane.add(login);
+	//login.setVisible(true);
+	//}
+	
 	public void estudianteVentana() {
 		CrearEstudiante crearEstudiante = new CrearEstudiante(cursos, estudiantes, idEstudiantes);
 		desktopPane.add(crearEstudiante);
@@ -246,7 +294,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for (Candidato candidato : candidatos) {
-			dataset.addValue(candidato.getVotos(), "Candidato", ((Candidato) candidatos).getNombre());
+			dataset.addValue(candidato.getVotos(), "Candidato", candidato.getNombre());
 		}
 		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart", "Category", "Series", dataset,
 				PlotOrientation.VERTICAL, true, true, false);

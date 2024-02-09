@@ -24,7 +24,7 @@ public class Candidato {
 	}
 	
 	public String getLista() {
-		return nombre;
+		return lista;
 	}
 
 	public void setLista(String lista) {
